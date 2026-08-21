@@ -1,56 +1,30 @@
-"use client";
-import { useState,useEFFect } from "react";
-const EMAILS_VITALICIOS = ["samyleandro1@gmail.com"]
-const LINK_PAGAMENTO = "https://payment-link-v3.stone.com.br/pl_JZqWpY3oz7PaYgmf86hxb9w6LeyBKRGA"
-export default function Page() {
-  const [url, setUrl] = useState("");
-  const [cuts, setCuts] = useState([]);
-  const [id, setId] = useState("");
-  const [loading, setLoading] = useState(false);
+'use client'
 
-  function pegarID(link){
-    let v = link;
-    if(v.includes("v=")) v = v.split("v=")[1].split("&")[0];
-    if(v.includes("youtu.be/")) v = v.split("youtu.be/")[1].split("?")[0];
-    return v.trim();
-  }
+import { useState, useEffect, useRef } from 'react'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription } from '@/components/ui/dialog'
+import { Badge } from '@/components/ui/badge'
+import { Separator } from '@/components/ui/separator'
+import { toast } from 'sonner'
+import {
+  Scissors, Sparkles, Zap, Youtube, Download, Trash2, LogOut, Crown, Shield,
+  Play, Pause, Check, Rocket, TrendingUp, Video, Palette, ArrowRight, Lock,
+  Star, Users, DollarSign, Edit3, ShieldCheck
+} from 'lucide-react'
 
-async function cortarReal(){
-  if(!url || url.trim() === "") return alert("Cola o link");
-  setLoading(true);
-  const videoId = pegarID(url1);
-  setId(videoId);
+const OWNER_EMAIL = 'samyleandro1@gmail.com'
+const PAY_LINK = 'https://payment-link-v3.stone.com.br/pl_JZqWpY3oz7PaYgmf86hxb9w6LeyBKRGA'
+const PRICE = 'R$9,90'
 
- // 10 CORTES DE 1 MINUTO - FUNCIONA EM VÍDEO DE QUALQUER TAMANHO
-const novosCortes = Array.from({ length: 10 }, (_, i) => {
-  // Pega a duração real do vídeo, se não souber usa 1 hora como padrão
-  const duracaoVideo = window.duracaoRealDoVideo || 3600; 
-  const intervalo = Math.floor(duracaoVideo / 10);
-  const start = (i * intervalo) + 10; // começa espalhado
-  const end = start + 60; // 1 minuto exato, e PARA
-  return {
-    id: Math.random().toString(36).substr(2,9),
-    titulo: `Melhor Momento #${i+1}`,
-    inicio: start,
-    fim: end,
-    duracao: 60,
-    score: 90 + i,
-  };
-});
-    return {
-      id: Math.random().toString(36).substr(2,9),
-      titulo: `Melhor Momento #${i+1}`,
-      inicio: start,
-      fim: end,
-      duracao: 60,
-      score: Math.floor(Math.random()*10)+90,
-    }
-  });
-  setCuts(novosCortes);
-  setLoading(false);
-} 
-
-  // --- INICIO TELA BONITA - 773 LINHAS ===
+// -------------- localStorage helpers --------------
+const LS = {
+  users: 'cortaai_users',
+  session: 'cortaai_session',
+  clips: 'cortaai_clips', // { [email]: Clip[] }
+}
 const readLS = (k, fb) => {
   if (typeof window === 'undefined') return fb
   try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : fb } catch { return fb }
@@ -69,29 +43,24 @@ const mockPhrases = [
   'O que aconteceu depois foi surreal',
 ]
 const genFakeClips = (url) => {
- const n = 10;//fixo 10 cortes
+  const n = 3 + Math.floor(Math.random() * 3) // 3-5 cortes
   const arr = []
   for (let i = 0; i < n; i++) {
-    const duracaoTotal = 60 * 60; // 3600 = 1 hora. Se o vídeo tem 20min, bota 20*60
-    const intervalo = Math.floor(duracaoTotal / n); // divide o vídeo em 10 partes iguais
-    const start = (i * intervalo) + Math.floor(Math.random() * 30);
-    const end = start + 60; // 1 minuto de corte
     arr.push({
       id: crypto.randomUUID(),
       title: `Corte Viral #${i + 1}`,
       caption: mockPhrases[Math.floor(Math.random() * mockPhrases.length)],
-      duration: 60,
-      start: start,
-      end: end,
+      duration: 30 + Math.floor(Math.random() * 30),
       score: 82 + Math.floor(Math.random() * 18),
       thumbnailHue: Math.floor(Math.random() * 360),
       sourceUrl: url,
       createdAt: new Date().toISOString(),
     })
   }
-  return arr;
+  return arr
 }
 
+// -------------- App --------------
 export default function App() {
   const [route, setRoute] = useState('landing') // landing | login | register | dashboard | admin
   const [session, setSession] = useState(null)
