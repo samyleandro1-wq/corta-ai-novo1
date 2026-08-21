@@ -57,19 +57,26 @@ const mockPhrases = [
   'O que aconteceu depois foi surreal',
 ]
 const genFakeClips = (url) => {
-  const n = 3 + Math.floor(Math.random() * 3) // 3-5 cortes
+  const n = 10; // FIXO 10 CORTES
   const arr = []
   for (let i = 0; i < n; i++) {
+    const start = (i * 90) + Math.floor(Math.random() * 15) + 5;
+    const end = start + 60;
     arr.push({
       id: crypto.randomUUID(),
       title: `Corte Viral #${i + 1}`,
       caption: mockPhrases[Math.floor(Math.random() * mockPhrases.length)],
-      duration: 30 + Math.floor(Math.random() * 30),
+      duration: 60,
+      start: start,
+      end: end,
       score: 82 + Math.floor(Math.random() * 18),
       thumbnailHue: Math.floor(Math.random() * 360),
       sourceUrl: url,
       createdAt: new Date().toISOString(),
     })
+  }
+  return arr;
+}
   }
   return arr
 }
