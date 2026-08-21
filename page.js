@@ -77,11 +77,7 @@ const genFakeClips = (url) => {
   }
   return arr;
 }
-  }
-  return arr
-}
 
-// -------------- App --------------
 export default function App() {
   const [route, setRoute] = useState('landing') // landing | login | register | dashboard | admin
   const [session, setSession] = useState(null)
