@@ -59,12 +59,13 @@ const mockPhrases = [
   'O que aconteceu depois foi surreal',
 ]
 const genFakeClips = (url) => {
-  const n = 10; // FIXO 10 CORTES
+ const n = 10;//fixo 10 cortes
   const arr = []
   for (let i = 0; i < n; i++) {
-    const intervalo = 360;
-    const start = (i * intervalo) + Math.floor(Math.random() * 60) + 20;
-    const end = start + 60;
+    const duracaoTotal = 60 * 60; // 3600 = 1 hora. Se o vídeo tem 20min, bota 20*60
+    const intervalo = Math.floor(duracaoTotal / n); // divide o vídeo em 10 partes iguais
+    const start = (i * intervalo) + Math.floor(Math.random() * 30);
+    const end = start + 60; // 1 minuto de corte
     arr.push({
       id: crypto.randomUUID(),
       title: `Corte Viral #${i + 1}`,
