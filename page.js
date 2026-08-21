@@ -21,12 +21,22 @@ async function cortarReal(){
   const videoId = pegarID(url1);
   setId(videoId);
 
-  // 10 CORTES DE 1 MINUTO - ESPALHADOS
-  const novosCortes = Array.from({ length: 10 }, (_, i) => {
-    // 6 minutos entre cada corte (360 seg) pra pegar o vídeo todo
-    const intervalo = 360; 
-    const start = (i * intervalo) + Math.floor(Math.random() * 60) + 20;
-    const end = start + 60;
+ // 10 CORTES DE 1 MINUTO - FUNCIONA EM VÍDEO DE QUALQUER TAMANHO
+const novosCortes = Array.from({ length: 10 }, (_, i) => {
+  // Pega a duração real do vídeo, se não souber usa 1 hora como padrão
+  const duracaoVideo = window.duracaoRealDoVideo || 3600; 
+  const intervalo = Math.floor(duracaoVideo / 10);
+  const start = (i * intervalo) + 10; // começa espalhado
+  const end = start + 60; // 1 minuto exato, e PARA
+  return {
+    id: Math.random().toString(36).substr(2,9),
+    titulo: `Melhor Momento #${i+1}`,
+    inicio: start,
+    fim: end,
+    duracao: 60,
+    score: 90 + i,
+  };
+});
     return {
       id: Math.random().toString(36).substr(2,9),
       titulo: `Melhor Momento #${i+1}`,
