@@ -62,7 +62,8 @@ const genFakeClips = (url) => {
   const n = 10; // FIXO 10 CORTES
   const arr = []
   for (let i = 0; i < n; i++) {
-    const start = (i * 90) + Math.floor(Math.random() * 15) + 5;
+    const intervalo = 360;
+    const start = (i * intervalo) + Math.floor(Math.random() * 60) + 20;
     const end = start + 60;
     arr.push({
       id: crypto.randomUUID(),
